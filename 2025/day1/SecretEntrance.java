@@ -4,9 +4,8 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class SecretEntrance {
-  public static void main(String[] args) {
-    File file = new File("part1.input");
 
+  private static int partOne(File file) {
     int password = 0;
     int dialNumber = 50;
 
@@ -37,6 +36,14 @@ public class SecretEntrance {
       System.out.println("add a part1.input file");
     }
 
-    System.out.println("Password: " + password);
+    return password;
   }
+}
+
+public static void main(String[] args) {
+  File partOneFile = new File("part1.input");
+  int password = SecretEntrance.partOne(partOneFile);
+
+  System.out.println("Password: " + password);
+
 }
