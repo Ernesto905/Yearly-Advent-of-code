@@ -179,8 +179,33 @@ public class GiftShop {
     return true;
   }
 
-  private static double partTwo() {
-    File file = new File("part2.input");
+  private static double partOne(File file) {
+    double totalSum = 0;
+
+    try {
+      Scanner input = new Scanner(file);
+
+      input.useDelimiter("[,\\-\\s]");
+
+      while (input.hasNext("[0-9]+")) {
+        long currentNumber = Long.parseLong(input.next("[0-9]+"));
+        long lastNumber = Long.parseLong(input.next("[0-9]+"));
+
+        for (; currentNumber <= lastNumber; currentNumber++) {
+          if (isDoublet(currentNumber)) {
+            totalSum = totalSum + currentNumber;
+          }
+        }
+      }
+      input.close();
+
+    } catch (FileNotFoundException fnfe) {
+      System.out.println("add a part1.input file");
+    }
+    return totalSum;
+  }
+
+  private static double partTwo(File file) {
     double totalSum = 0;
 
     try {
@@ -196,27 +221,19 @@ public class GiftShop {
 
           if (isDoublet(currentNumber)) {
             totalSum = totalSum + currentNumber;
-            System.out.println("2 Bad boy: " + currentNumber);
           }
 
           // me and my homies love prime numbers
           else if (isTriplet(currentNumber)) {
             totalSum = totalSum + currentNumber;
-
-            System.out.println("3 Bad boy: " + currentNumber);
           } else if (isQuintuplet(currentNumber)) {
             totalSum = totalSum + currentNumber;
-
-            System.out.println("5 Bad boy: " + currentNumber);
           } else if (isSeptuplet(currentNumber)) {
             totalSum = totalSum + currentNumber;
-            System.out.println("7 Bad boy: " + currentNumber);
           } else if (isUndecuplet(currentNumber)) {
             totalSum = totalSum + currentNumber;
-            System.out.println("9 Bad boy: " + currentNumber);
           } else if (isTredecuplet(currentNumber)) {
             totalSum = totalSum + currentNumber;
-            System.out.println("13 Bad boy: " + currentNumber);
           }
 
         }
@@ -232,64 +249,13 @@ public class GiftShop {
   }
 
   public static void main(String[] args) {
-    /*
-     * double testNum = 123123123;
-     * double testNum2 = 121212;
-     * double testNum3 = 111;
-     * 
-     * double testFifth1 = 11111;
-     * double testFifth2 = 1212121212;
-     * 
-     * double testSeventh = 1111111;
-     * 
-     * double testEleventh = 11111111111D;
-     * 
-     * double testsThirteenth = 1111111111111D;
-     * double testsThirteenth2 = 12121212121212121212121212D;
-     * 
-     * assert GiftShop.isTriplet(testNum);
-     * assert GiftShop.isTriplet(testNum2);
-     * assert GiftShop.isTriplet(testNum3);
-     * 
-     * assert GiftShop.isQuintuplet(testFifth1);
-     * assert GiftShop.isQuintuplet(testFifth2);
-     * 
-     * assert GiftShop.isSeptuplet(testSeventh);
-     * 
-     * assert GiftShop.isUndecuplet(testEleventh);
-     * 
-     * assert GiftShop.isTredecuplet(testsThirteenth);
-     * assert GiftShop.isTredecuplet(testsThirteenth2);
-     */
+    File partOneFile = new File("part1.input");
+    File partTwoFile = new File("part2.input");
 
-    double total = GiftShop.partTwo();
-    System.out.printf("%.0f\n", total);
-    /*
-     * File file = new File("part1.input");
-     * long totalSum = 0;
-     * 
-     * try {
-     * Scanner input = new Scanner(file);
-     * 
-     * input.useDelimiter("[,\\-\\s]");
-     * 
-     * while (input.hasNext("[0-9]+")) {
-     * long currentNumber = Long.parseLong(input.next("[0-9]+"));
-     * long lastNumber = Long.parseLong(input.next("[0-9]+"));
-     * 
-     * for (; currentNumber <= lastNumber; currentNumber++) {
-     * if (isDoublet(currentNumber)) {
-     * totalSum = totalSum + currentNumber;
-     * }
-     * }
-     * }
-     * input.close();
-     * 
-     * } catch (FileNotFoundException fnfe) {
-     * System.out.println("add a part1.input file");
-     * }
-     * 
-     * System.out.println(totalSum);
-     */
+    double partOnePassword = GiftShop.partOne(partOneFile);
+    double partTwoPassword = GiftShop.partTwo(partTwoFile);
+
+    System.out.printf("Part One: %.0f\n", partOnePassword);
+    System.out.printf("Part Two: %.0f\n", partTwoPassword);
   }
 }
