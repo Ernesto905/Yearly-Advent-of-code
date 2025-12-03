@@ -60,34 +60,10 @@ public class Lobby {
   }
 
   private static Map<String, Object> scanPack(String batteryBank, int leftOffIdx, int iterationNum) {
-    /*
-     * init maxbattery so far variable
-     * 
-     * Loop throuh every battery in the batteryBank.
-     * Start from leftOffIdx
-     * Go up to: batteryPack.legth() - (12 - iterationNum)
-     *
-     * In the loop: get the max value seen so far and update leftOffIdx
-     *
-     *
-     * after loop: return the joltage of best battery and the leftOffIdx as a
-     * map
-     */
-
     Map<String, Object> output = new HashMap<>();
 
     char largestJolt = batteryBank.charAt(leftOffIdx);
     int largestBatteryIdx = leftOffIdx;
-
-    System.out.println("Printing battery bank: " + batteryBank);
-    System.out.println("First battery joltage: " + largestJolt);
-
-    System.out.println("Current iteration: " + iterationNum);
-    // batteryBank.length() - (13 - iterationNum)
-    //
-    // on last battery:
-    // ACTUALLY IS: 15 - 13 - 11
-    // SHOULD BE:
 
     for (int i = leftOffIdx; i < batteryBank.length() - (11 - iterationNum); i++) {
       char batteryjoltage = batteryBank.charAt(i);
@@ -100,9 +76,6 @@ public class Lobby {
 
     output.put("leftOffIdx", largestBatteryIdx + 1);
     output.put("batteryJoltage", largestJolt);
-
-    System.out.println("New Left off idx: " + (largestBatteryIdx + 1));
-    System.out.println("Lagest joltage seen: " + largestJolt + "\n");
 
     return output;
   }
@@ -127,14 +100,13 @@ public class Lobby {
           batteriesChosen.append(packScanResult.get("batteryJoltage"));
         }
 
-        System.out.println("\nTotal pack Joltage: " + batteriesChosen.toString() + "\n");
         packJoltage = packJoltage + Double.parseDouble(batteriesChosen.toString());
       }
 
       input.close();
 
     } catch (FileNotFoundException fnfe) {
-      System.out.println("Add part1.input");
+      System.out.println("Add part2.input");
     }
 
     return packJoltage;
