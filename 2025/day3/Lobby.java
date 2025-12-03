@@ -2,6 +2,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import java.util.Scanner;
+import java.util.Map;
+import java.util.HashMap;
 
 public class Lobby {
 
@@ -57,14 +59,98 @@ public class Lobby {
 
   }
 
+  private static Map<String, Object> scanPack(String batteryBank, int leftOffIdx, int iterationNum) {
+    /*
+     * init maxbattery so far variable
+     * 
+     * Loop throuh every battery in the batteryBank.
+     * Start from leftOffIdx
+     * Go up to: batteryPack.legth() - (12 - iterationNum)
+     *
+     * In the loop: get the max value seen so far and update leftOffIdx
+     *
+     *
+     * after loop: return the joltage of best battery and the leftOffIdx as a
+     * map
+     */
+
+    Map<String, Object> output = new HashMap<>();
+
+    char largestJolt = batteryBank.charAt(leftOffIdx);
+    int largestBatteryIdx = leftOffIdx;
+
+    System.out.println("Printing battery bank: " + batteryBank);
+    System.out.println("First battery joltage: " + largestJolt);
+
+    System.out.println("Current iteration: " + iterationNum);
+    // batteryBank.length() - (13 - iterationNum)
+    //
+    // on last battery:
+    // ACTUALLY IS: 15 - 13 - 11
+    // SHOULD BE:
+
+    for (int i = leftOffIdx; i < batteryBank.length() - (11 - iterationNum); i++) {
+      char batteryjoltage = batteryBank.charAt(i);
+
+      if (batteryjoltage > largestJolt) {
+        largestJolt = batteryBank.charAt(i);
+        largestBatteryIdx = i;
+      }
+    }
+
+    output.put("leftOffIdx", largestBatteryIdx + 1);
+    output.put("batteryJoltage", largestJolt);
+
+    System.out.println("New Left off idx: " + (largestBatteryIdx + 1));
+    System.out.println("Lagest joltage seen: " + largestJolt + "\n");
+
+    return output;
+  }
+
+  private static double partTwo(File file) {
+
+    Double packJoltage = 0.0;
+
+    try {
+      Scanner input = new Scanner(file);
+
+      while (input.hasNextLine()) {
+        String batteryBank = input.nextLine();
+
+        int leftOffIdx = 0;
+        StringBuilder batteriesChosen = new StringBuilder();
+
+        for (int i = 0; i < 12; i++) {
+          Map<String, Object> packScanResult = Lobby.scanPack(batteryBank, leftOffIdx, i);
+
+          leftOffIdx = (int) packScanResult.get("leftOffIdx");
+          batteriesChosen.append(packScanResult.get("batteryJoltage"));
+        }
+
+        System.out.println("\nTotal pack Joltage: " + batteriesChosen.toString() + "\n");
+        packJoltage = packJoltage + Double.parseDouble(batteriesChosen.toString());
+      }
+
+      input.close();
+
+    } catch (FileNotFoundException fnfe) {
+      System.out.println("Add part1.input");
+    }
+
+    return packJoltage;
+
+  }
+
   public static void main(String[] args) {
     File partOneFile = new File("part1.input");
     File partTwoFile = new File("part2.input");
 
     int partOnePassword = partOne(partOneFile);
-    // int partTwoPassword = partOne(partTwoFile);
+    double partTwoPassword = partTwo(partTwoFile);
 
-    System.out.println("Part pw:");
+    System.out.println("Part 1 pw:");
     System.out.println(partOnePassword);
+
+    System.out.printf("Part 2 pw:\n%.0f\n", partTwoPassword);
   }
 }
